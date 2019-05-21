@@ -12,7 +12,7 @@ namespace Monarchs.App.Model
         {
         }
 
-        public override MonarchDTO GetObjects(string Path)
+        public override List<MonarchDTO> GetObjects(string Path)
         {
             throw new NotImplementedException();
         }

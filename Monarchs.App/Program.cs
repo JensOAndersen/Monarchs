@@ -35,7 +35,7 @@ namespace Monarchs.App
                 try
                 {
                     _repository = new MonarchRepository(
-                        new ApiAccess("", token)
+                        new ApiAccess("http://mysafeinfo.com/api/data?", token)
                     );
                     Prompt.Write("API Accessed and data has been read, press any key to see results");
                     Prompt.Wait();
@@ -46,6 +46,9 @@ namespace Monarchs.App
                 }
             }
 
+            _monarchs = _repositor
+
+            //Solving assignment
             Prompt.Write($"There are {_monarchs.Count} monarchs in the list");
 
             var longestMonarch = _monarchs.Aggregate((m1, m2) => m1.ReignDuration > m2.ReignDuration ? m1 : m2);

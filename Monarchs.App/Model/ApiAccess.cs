@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Monarchs.App.Entities;
 using Monarchs.App.Helpers;
+using Newtonsoft.Json;
 
 namespace Monarchs.App.Model
 {
@@ -15,8 +16,10 @@ namespace Monarchs.App.Model
             _token = token;
         }
 
-        public override MonarchDTO GetObjects(string Path)
+        public override List<MonarchDTO> GetObjects(string Path)
         {
+            var apiResult = 
+
             throw new NotImplementedException();
         }
     }
