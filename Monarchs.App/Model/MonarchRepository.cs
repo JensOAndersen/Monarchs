@@ -9,9 +9,9 @@ namespace Monarchs.App.Model
 {
     class MonarchRepository
     {
-        private BaseApiAccess apiAcces; //both file and api access derives from BaseApiAccess
+        private BaseMonarchApiAccess apiAcces; //both file and api access derives from BaseApiAccess
 
-        public MonarchRepository(BaseApiAccess access)
+        public MonarchRepository(BaseMonarchApiAccess access)
         {
             this.apiAcces = access;
         }
@@ -27,13 +27,17 @@ namespace Monarchs.App.Model
 
             List<Monarch> monarchs = new List<Monarch>();
 
-            foreach (var mnDto in monarchDtos)
+            foreach (var mnDto in monarchDtos)  //this can probably be optimized, but i dont know how to use LINQ's .Select() 
+                                                //with the kind of logic i have in the class below. I probably COULD have moved
+                                                //it to Monarch's ReignDuration setter, but i prefer to have as little logic
+                                                //as possible in the properties
             {
                 int reignStart = 0;
                 int reignEnd = 0;
 
                 string reignDur = mnDto.Yrs;
 
+                //begin parsing reign duration
                 if (reignDur[reignDur.Length - 1] == '-') //if currently reigning monarch
                 {
                     reignStart = int.Parse(reignDur.Replace("-", string.Empty));
@@ -48,18 +52,18 @@ namespace Monarchs.App.Model
                     reignStart = int.Parse(reignDur.Split("-")[0]);
                     reignEnd = int.Parse(reignDur.Split("-")[1]);
                 }
+                //end parsin reign duration
 
-                Monarch monarch = new Monarch
+                monarchs.Add(new Monarch
                 {
                     Name = mnDto.Nm,
                     Country = mnDto.Cty,
                     House = mnDto.Hse,
                     ReignEnd = reignEnd,
                     ReignStart = reignStart
-                };
-
-                monarchs.Add(monarch);
+                });
             }
+
             return monarchs;
         }
     }

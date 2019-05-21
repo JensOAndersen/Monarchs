@@ -5,6 +5,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+/*
+    Assignment description: Access the API and solve the following problems:
+    1. How many monarchs are there in the list
+    2. Which monarch ruled the longest (duration too)
+    3. Which house ruled the longest (duration)
+    4. Most common firstname
+
+
+    Ideas for further development.
+    Make some logic that checks if the monarchs.txt file has been updated recently. And use the textfile as datasource if it has been used recently.
+    If i had access to the API's Post, Put and Delete methods i could expand the interface with those methods, allowing for saving in the file and on the API
+*/
+
 namespace Monarchs.App
 {
     class Program
@@ -25,7 +38,7 @@ namespace Monarchs.App
                 Prompt.Write("Token not provided, trying to access locally saved monarchs");
                 try
                 {
-                    _repository = new MonarchRepository(new FileAccess(""));
+                    _repository = new MonarchRepository(new MonarchFileAccess(""));
 
                     _monarchs = _repository.GetAllMonarchs("monarchs.txt");
 
@@ -42,8 +55,9 @@ namespace Monarchs.App
             {
                 try
                 {
+                    //token was input, use the API as datasource
                     _repository = new MonarchRepository(
-                        new ApiAccess("http://mysafeinfo.com/api/data?", token)
+                        new MonarchApiAccess("http://mysafeinfo.com/api/data?", token)
                     );
 
                     _monarchs = _repository.GetAllMonarchs("list=englishmonarchs&format=json");
@@ -87,9 +101,4 @@ namespace Monarchs.App
         }
     }
 }
-/*
-    1. How many monarchs are there in the list
-    2. Which monarch ruled the longest (duration too)
-    3. Which house ruled the longest (duration)
-    4. Most common firstname
-*/
+

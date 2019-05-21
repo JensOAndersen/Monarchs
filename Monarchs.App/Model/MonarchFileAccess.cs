@@ -7,18 +7,23 @@ using Monarchs.App.Helpers;
 using Newtonsoft.Json;
 namespace Monarchs.App.Model
 {
-    public class FileAccess : BaseApiAccess
+    public class MonarchFileAccess : BaseMonarchApiAccess
     {
-        public FileAccess(string basePath) : base(basePath)
+        public MonarchFileAccess(string basePath) : base(basePath)
         {
         }
 
-        public override List<MonarchDTO> GetObjects(string path)
+        /// <summary>
+        /// Gets monarch DTO's from source
+        /// </summary>
+        /// <param name="fileName">name of the file</param>
+        /// <returns>List<MonarchDTO></returns>
+        public override List<MonarchDTO> GetObjects(string fileName)
         {
-            string fullpath = BasePath + path;
+            string fullpath = BasePath + fileName;
             string fileContent = "";
 
-            if (File.Exists(path))
+            if (File.Exists(fileName))
                 fileContent = File.ReadAllText(fullpath);
             else
                 throw new IOException("File not available");
@@ -26,6 +31,10 @@ namespace Monarchs.App.Model
             return JsonConvert.DeserializeObject<List<MonarchDTO>>(fileContent);
         }
 
+        /// <summary>
+        /// Saves the input in file monarchs.txt in the same location as the program
+        /// </summary>
+        /// <param name="input">input to be saved</param>
         public void SaveApiResult(string input)
         {
             try

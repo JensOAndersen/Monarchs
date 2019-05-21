@@ -9,19 +9,24 @@ using Newtonsoft.Json;
 
 namespace Monarchs.App.Model
 {
-    public class ApiAccess : BaseApiAccess
+    public class MonarchApiAccess : BaseMonarchApiAccess
     {
         private readonly string _token;
 
-        private FileAccess fileAccess;
+        private MonarchFileAccess fileAccess;
 
-        public ApiAccess(string basePath, string token) : base(basePath)
+        public MonarchApiAccess(string basePath, string token) : base(basePath)
         {
             _token = token;
 
-            fileAccess = new FileAccess("");
+            fileAccess = new MonarchFileAccess("");
         }
 
+        /// <summary>
+        /// Gets a list of MonarchDTO's from the source
+        /// </summary>
+        /// <param name="path">API path</param>
+        /// <returns>List of MonarchDTO's</returns>
         public override List<MonarchDTO> GetObjects(string path)
         {
             string url = $"{BasePath}{path}&token={_token}";
@@ -32,7 +37,7 @@ namespace Monarchs.App.Model
                 apiResult = client.DownloadString(url);
             }
 
-            fileAccess.SaveApiResult(apiResult);
+            fileAccess.SaveApiResult(apiResult);//save the API result locally, so i dont have to contact the API every time i run the program
             
             var res = JsonConvert.DeserializeObject<List<MonarchDTO>>(apiResult);
 
