@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using Monarchs.App.Entities;
 using Monarchs.App.Helpers;
@@ -12,9 +13,25 @@ namespace Monarchs.App.Model
         {
         }
 
-        public override List<MonarchDTO> GetObjects(string Path)
+        public override List<MonarchDTO> GetObjects(string path)
         {
             throw new NotImplementedException();
+        }
+
+        public void SaveApiResult(string input)
+        {
+            try
+            {
+                using (StreamWriter writer = new StreamWriter("monarchs.txt"))
+                {
+                    writer.WriteLine(input);
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
     }
 }

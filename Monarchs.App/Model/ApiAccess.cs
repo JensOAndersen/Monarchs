@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
 using System.Text;
 using Monarchs.App.Entities;
 using Monarchs.App.Helpers;
@@ -16,11 +18,19 @@ namespace Monarchs.App.Model
             _token = token;
         }
 
-        public override List<MonarchDTO> GetObjects(string Path)
+        public override List<MonarchDTO> GetObjects(string path)
         {
-            var apiResult = 
+            string url = $"{BasePath}{path}&token={_token}";
+            string apiResult = "";
 
-            throw new NotImplementedException();
+            using(WebClient client = new WebClient())
+            {
+                apiResult = client.DownloadString(url);
+            }
+            
+            var res = JsonConvert.DeserializeObject<List<MonarchDTO>>(apiResult);
+
+            return res;
         }
     }
 }

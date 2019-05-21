@@ -16,7 +16,7 @@ namespace Monarchs.App
         {
             Prompt.Write("Welcome to MonarchApp, please provide a token to access most recent monarch Data");
 
-            string token = Prompt.GetString("Token:");
+            string token = Console.ReadLine();
 
             //check if user provided a token or not. 
             if (string.IsNullOrEmpty(token))
@@ -26,27 +26,32 @@ namespace Monarchs.App
                 {
                     _repository = new MonarchRepository(new FileAccess(""));
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Prompt.Write(ex.Message);
                     Prompt.ErrorExit("Error occured in reading file access... press any key to exit the program");
                 }
-            } else
+            }
+            else
             {
                 try
                 {
                     _repository = new MonarchRepository(
                         new ApiAccess("http://mysafeinfo.com/api/data?", token)
                     );
+
+                    _monarchs = _repository.GetAllMonarchs("list=englishmonarchs&format=json");
+
                     Prompt.Write("API Accessed and data has been read, press any key to see results");
                     Prompt.Wait();
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Prompt.Write(ex.Message);
                     Prompt.ErrorExit("Error occured in accessing the API... press any key to exit the program");
                 }
             }
 
-            _monarchs = _repositor
 
             //Solving assignment
             Prompt.Write($"There are {_monarchs.Count} monarchs in the list");
@@ -55,13 +60,13 @@ namespace Monarchs.App
             Prompt.Write($"{longestMonarch.Name} reigned the longest, at a duration of {longestMonarch.ReignDuration} years");
 
             var mostRulingHouse = _monarchs.GroupBy(x => x.House)
-                                    .OrderBy(g => g.Sum(x => x.ReignDuration))
+                                    .OrderByDescending(g => g.Sum(x => x.ReignDuration))
                                     .FirstOrDefault();
 
-            Prompt.Write($"The most rulig house was {mostRulingHouse.Key} with a total of {mostRulingHouse.Sum(x => x.ReignDuration)} years");
+            Prompt.Write($"The most ruling house was \"{mostRulingHouse.Key}\" with a total of {mostRulingHouse.Sum(x => x.ReignDuration)} years");
 
             var mostCommonFirstName = _monarchs.GroupBy(x => x.Name.Split(" ")[0])
-                                        .OrderBy(g => g.Count())
+                                        .OrderByDescending(g => g.Count())
                                         .FirstOrDefault();
             Prompt.Write($"The most common firstname is: {mostCommonFirstName.Key}");
 

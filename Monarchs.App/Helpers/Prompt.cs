@@ -11,13 +11,6 @@ namespace Monarchs.App.Helpers
             Console.WriteLine("> " +msg);
         }
 
-        public static string GetString(string msg)
-        {
-            Write(msg);
-            Console.Write("> ");
-            return Console.ReadLine();
-        }
-
         public static void ErrorExit(string msg)
         {
             Write(msg);

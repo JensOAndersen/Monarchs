@@ -14,8 +14,8 @@ namespace Monarchs.App.Helpers
             _basePath = basePath;
         }
 
-        public string BasePath { get; }
+        public string BasePath { get => _basePath; }
 
-        public abstract List<MonarchDTO> GetObjects(string Path);
+        public abstract List<MonarchDTO> GetObjects(string path);
     }
 }

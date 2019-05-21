@@ -14,6 +14,6 @@ namespace Monarchs.App.Helpers
     {
         string BasePath { get; }
 
-        List<T> GetObjects(string Path);
+        List<T> GetObjects(string path);
     }
 }
