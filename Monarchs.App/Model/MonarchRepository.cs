@@ -9,11 +9,11 @@ namespace Monarchs.App.Model
 {
     class MonarchRepository
     {
-        private BaseApiAccess access; //both file and api access derives from BaseApiAccess
+        private BaseApiAccess apiAcces; //both file and api access derives from BaseApiAccess
 
         public MonarchRepository(BaseApiAccess access)
         {
-            this.access = access;
+            this.apiAcces = access;
         }
 
         /*
@@ -23,29 +23,27 @@ namespace Monarchs.App.Model
         */
         public List<Monarch> GetAllMonarchs(string path)
         {
-            var monarchDtos = access.GetObjects(path);
+            var monarchDtos = apiAcces.GetObjects(path);
 
             List<Monarch> monarchs = new List<Monarch>();
 
             foreach (var mnDto in monarchDtos)
             {
-
-
                 int reignStart = 0;
                 int reignEnd = 0;
 
                 string reignDur = mnDto.Yrs;
 
-                if (reignDur[reignDur.Length - 1] == '-')
+                if (reignDur[reignDur.Length - 1] == '-') //if currently reigning monarch
                 {
                     reignStart = int.Parse(reignDur.Replace("-", string.Empty));
                     reignEnd = DateTime.Now.Year;
                 }
-                else if (!reignDur.Contains("-"))
+                else if (!reignDur.Contains("-")) //check if the monarch was reigning for less than a year
                 {
                     reignEnd = reignStart = int.Parse(reignDur);
                 }
-                else
+                else //monarch has reigned for more than one year
                 {
                     reignStart = int.Parse(reignDur.Split("-")[0]);
                     reignEnd = int.Parse(reignDur.Split("-")[1]);
@@ -59,6 +57,7 @@ namespace Monarchs.App.Model
                     ReignEnd = reignEnd,
                     ReignStart = reignStart
                 };
+
                 monarchs.Add(monarch);
             }
             return monarchs;
