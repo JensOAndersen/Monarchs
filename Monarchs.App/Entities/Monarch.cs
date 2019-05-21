@@ -20,5 +20,13 @@ namespace Monarchs.App.Entities
         public string House { get; set; }
         public int ReignStart { get; set; }
         public int ReignEnd { get; set; }
+
+        public int ReignDuration
+        {
+            get
+            {
+                return ReignEnd - ReignStart;
+            }
+        }
     }
 }
