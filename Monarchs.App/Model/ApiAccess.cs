@@ -13,9 +13,13 @@ namespace Monarchs.App.Model
     {
         private readonly string _token;
 
+        private FileAccess fileAccess;
+
         public ApiAccess(string basePath, string token) : base(basePath)
         {
             _token = token;
+
+            fileAccess = new FileAccess("");
         }
 
         public override List<MonarchDTO> GetObjects(string path)
@@ -27,6 +31,8 @@ namespace Monarchs.App.Model
             {
                 apiResult = client.DownloadString(url);
             }
+
+            fileAccess.SaveApiResult(apiResult);
             
             var res = JsonConvert.DeserializeObject<List<MonarchDTO>>(apiResult);
 

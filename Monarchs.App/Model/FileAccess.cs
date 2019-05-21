@@ -4,7 +4,7 @@ using System.IO;
 using System.Text;
 using Monarchs.App.Entities;
 using Monarchs.App.Helpers;
-
+using Newtonsoft.Json;
 namespace Monarchs.App.Model
 {
     public class FileAccess : BaseApiAccess
@@ -15,7 +15,15 @@ namespace Monarchs.App.Model
 
         public override List<MonarchDTO> GetObjects(string path)
         {
-            throw new NotImplementedException();
+            string fullpath = BasePath + path;
+            string fileContent = "";
+
+            if (File.Exists(path))
+                fileContent = File.ReadAllText(fullpath);
+            else
+                throw new IOException("File not available");
+
+            return JsonConvert.DeserializeObject<List<MonarchDTO>>(fileContent);
         }
 
         public void SaveApiResult(string input)
@@ -29,7 +37,6 @@ namespace Monarchs.App.Model
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
